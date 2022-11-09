@@ -62,7 +62,6 @@ const searchMovieValidation = celebrate({
 });
 
 module.exports = {
-  getUserByIdValidation,
   updateUserValidation,
   loginUserValidation,
   createUserValidation,
