@@ -2,10 +2,9 @@ const { celebrate, Joi } = require("celebrate");
 const validator = require("validator");
 const BadRequest = require("../errors/bad-request");
 
-const validateLink = (item) =>
-  /^((http|https):\/\/)(www\.)?([a-zA-Z0-9-]+.)+[\w-]+(\/[\w- ./?%&=#])?\/?$/.test(
-    item
-  );
+const validateLink = (item) => /^((http|https):\/\/)(www\.)?([a-zA-Z0-9-]+.)+[\w-]+(\/[\w- ./?%&=#])?\/?$/.test(
+  item,
+);
 
 const validationURL = (value) => {
   if (!validator.isURL(value, { require_protocol: true })) {

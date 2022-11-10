@@ -24,8 +24,7 @@ module.exports.createUser = async (req, res, next) => {
       },
     });
   } catch (err) {
-    if (err.code === 11000)
-      next(new ConflictError("Польватель с такими данными уже существует"));
+    if (err.code === 11000) next(new ConflictError("Польватель с такими данными уже существует"));
     switch (err.name) {
       case "ValidationError":
         next(new BadRequest("Введены некорректные данные"));
@@ -46,7 +45,7 @@ module.exports.login = async (req, res, next) => {
     const token = jwt.sign(
       { _id: user._id },
       NODE_ENV === "production" ? JWT_SECRET : "dev-secret",
-      { expiresIn: "7d" }
+      { expiresIn: "7d" },
     );
     res.send({ token });
   } catch (err) {
@@ -57,7 +56,7 @@ module.exports.login = async (req, res, next) => {
 module.exports.getMe = async (req, res, next) => {
   try {
     const user = await User.findById(req.user._id).orFail(
-      new NotFoundError("Пользователь не найден")
+      new NotFoundError("Пользователь не найден"),
     );
     res.send({ data: user });
   } catch (err) {
@@ -74,7 +73,7 @@ module.exports.updateMe = async (req, res, next) => {
       {
         new: true,
         runValidators: true,
-      }
+      },
     ).orFail(new NotFoundError("Пользователь не найден"));
     res.send({ data: user });
   } catch (err) {
