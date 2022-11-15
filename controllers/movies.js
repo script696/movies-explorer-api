@@ -2,6 +2,11 @@ const Movie = require("../models/movie");
 const BadRequest = require("../errors/bad-request");
 const NotFoundError = require("../errors/not-found-err");
 const ForbiddenError = require("../errors/forbidden-error");
+const {
+  NOT_FOUND_MOVIE_ERR,
+  FORBIDDEN_ERR,
+  INCORRECT_DATA_ERR,
+} = require("../utils/constants");
 
 module.exports.getMovies = async (req, res, next) => {
   try {
@@ -44,12 +49,10 @@ module.exports.createMovie = async (req, res, next) => {
     });
     res.send({ data: movie });
   } catch (err) {
-    switch (err.name) {
-      case "ValidationError":
-        next(new BadRequest());
-        break;
-      default:
-        next(err);
+    if (err.name === "ValidationError") {
+      next(new BadRequest(INCORRECT_DATA_ERR));
+    } else {
+      next(err);
     }
   }
 };
@@ -59,14 +62,14 @@ module.exports.deleteMovie = async (req, res, next) => {
   const reqMovie = req.params.movieId;
   try {
     const movie = await Movie.findById(reqMovie).orFail(
-      new NotFoundError("Фильм не найден"),
+      new NotFoundError(NOT_FOUND_MOVIE_ERR)
     );
     const movieOwnerId = movie.owner.toString();
     if (movieOwnerId === userId) {
       const deletedMovie = await Movie.findByIdAndDelete(reqMovie);
       res.send({ data: deletedMovie });
     } else {
-      throw new ForbiddenError();
+      throw new ForbiddenError(FORBIDDEN_ERR);
     }
   } catch (err) {
     next(err);
