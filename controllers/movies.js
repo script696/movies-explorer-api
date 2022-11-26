@@ -62,7 +62,7 @@ module.exports.deleteMovie = async (req, res, next) => {
   const reqMovie = req.params.movieId;
   try {
     const movie = await Movie.findById(reqMovie).orFail(
-      new NotFoundError(NOT_FOUND_MOVIE_ERR)
+      new NotFoundError(NOT_FOUND_MOVIE_ERR),
     );
     const movieOwnerId = movie.owner.toString();
     if (movieOwnerId === userId) {

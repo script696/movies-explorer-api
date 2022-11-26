@@ -2,13 +2,14 @@ const express = require("express");
 const mongoose = require("mongoose");
 const bodyParser = require("body-parser");
 const { errors } = require("celebrate");
+const helmet = require("helmet");
 const cors = require("./midlewares/cors");
 const { requestLogger, errorLogger } = require("./midlewares/logger");
 const limiter = require("./midlewares/limiter");
-const helmet = require("helmet");
+const { SERVER_ERR } = require("./utils/constants");
 require("dotenv").config();
 
-const { PORT = 3000, NODE_ENV } = process.env;
+const { PORT = 3000, NODE_ENV, DATA_BASE_URL } = process.env;
 const app = express();
 
 app.use(bodyParser.json());
@@ -33,7 +34,7 @@ app.use(errors());
 app.use((err, req, res, next) => {
   const { statusCode = 500, message } = err;
   res.status(statusCode).send({
-    message: statusCode === 500 ? "На сервере произошла ошибка" : message,
+    message: statusCode === 500 ? SERVER_ERR : message,
   });
   next();
 });

@@ -1,5 +1,6 @@
 const mongoose = require("mongoose");
 const { validateLink } = require("../midlewares/validation");
+const { INVALID_LINK } = require("../utils/constants");
 
 const movieSchema = new mongoose.Schema({
   nameRU: {
@@ -15,7 +16,7 @@ const movieSchema = new mongoose.Schema({
     required: true,
     validate: {
       validator: validateLink,
-      message: "Невалидная ссылка",
+      message: INVALID_LINK,
     },
   },
   trailerLink: {
@@ -23,7 +24,7 @@ const movieSchema = new mongoose.Schema({
     required: true,
     validate: {
       validator: validateLink,
-      message: "Невалидная ссылка",
+      message: INVALID_LINK,
     },
   },
   thumbnail: {
@@ -31,7 +32,7 @@ const movieSchema = new mongoose.Schema({
     required: true,
     validate: {
       validator: validateLink,
-      message: "Невалидная ссылка",
+      message: INVALID_LINK,
     },
   },
   country: {
