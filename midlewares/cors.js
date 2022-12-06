@@ -1,6 +1,6 @@
 const allowedCors = [
-  "https://script696.nomoredomains.icu",
-  "http://script696.nomoredomains.icu",
+  "https://api.script-movie.nomoredomains.icu",
+  "http://api.script-movie.nomoredomains.icu",
   "http://localhost:4000",
   "https://localhost:4000",
 ];
